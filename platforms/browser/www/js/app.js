@@ -51,3 +51,7 @@ $$('#my-login-screen .login-button').on('click', function () {
   // Alert username and password
   app.dialog.alert('Username: ' + username + '<br>Password: ' + password);
 });
+
+$$('.add-data').on('click', function () {
+  alert("Haiii");
+});
