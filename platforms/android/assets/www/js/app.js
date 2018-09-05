@@ -52,6 +52,10 @@ $$('#my-login-screen .login-button').on('click', function () {
   app.dialog.alert('Username: ' + username + '<br>Password: ' + password);
 });
 
-$$('.add-data').on('click', function () {
+$$('#add-data').on('click', function () {
   alert("Haiii");
 });
+
+/*Framework7.request.get('pages/add.html', function (data) {
+  $$(".popup .view .page").html(data);
+});*/

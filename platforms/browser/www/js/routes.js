@@ -9,7 +9,7 @@ routes = [
   },
   {
     path: '/add/',
-    url: './pages/add.html',
+    componentUrl: './pages/add.html',
   },
   {
     path: '/data/',

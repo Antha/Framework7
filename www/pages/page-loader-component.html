@@ -109,6 +109,8 @@
         console.log('pageMounted', page);
       },
       pageInit: function(e, page) {
+        var self = this;
+        self.$app.dialog.alert('Hello World');
         console.log('pageInit', page);
       },
       pageBeforeIn: function(e, page) {
