@@ -20,7 +20,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">Name</div>
                   <div class="item-input-wrap">
-                    <input type="text" name="name" placeholder="Your name">
+                    <input type="text" name="name" placeholder="Ex: Facebook">
                   </div>
                 </div>
               </div>
@@ -28,9 +28,9 @@
             <li>
               <div class="item-content item-input">
                 <div class="item-inner">
-                  <div class="item-title item-label">E-mail</div>
+                  <div class="item-title item-label">username</div>
                   <div class="item-input-wrap">
-                    <input type="email" name="email" placeholder="E-mail">
+                    <input type="text" name="username" placeholder="Ex: Verronika">
                   </div>
                 </div>
               </div>
@@ -38,24 +38,9 @@
             <li>
               <div class="item-content item-input">
                 <div class="item-inner">
-                  <div class="item-title item-label">Gender</div>
+                  <div class="item-title item-label">Password</div>
                   <div class="item-input-wrap">
-                    <select name="gender">
-                      <option value="male" selected>Male</option>
-                      <option value="female">Female</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="item-content">
-                <div class="item-inner">
-                  <div class="item-title">Toggle</div>
-                  <div class="item-after">
-                    <label class="toggle toggle-init">
-                      <input type="checkbox" name="toggle" value="yes"><i class="toggle-icon"></i>
-                    </label>
+                    <input type="password" name="password">
                   </div>
                 </div>
               </div>
@@ -112,12 +97,59 @@
         console.log('pageMounted', page);
       },
       pageInit: function(e, page) {
+        var data = this.$route.params;
+
         var self = this;
         
+        var dbSize = 5 * 1024 * 1024; // 5MB
+
+        var db = openDatabase("Todo", "", "Todo manager", dbSize, function() {
+            console.log('db successfully opened or created');
+        });
+
+        function onSuccess(transaction, resultSet) {
+            console.log('Query completed: ' + JSON.stringify(resultSet));
+        }
+
+        function onError(transaction, error) {
+            console.log('Query failed: ' + error.message);
+        }
 
         $$('#add-data').on('click', function () {
-          self.$app.dialog.alert('I Am Added');
+          db.transaction(function (tx) {
+             tx.executeSql("INSERT INTO data(NAME,USERNAME,PASSWORD) VALUES (?,?,?)", 
+                [$$("input[name=name]").val(),
+                 $$("input[name=username]").val(),
+                 $$("input[name=password]").val()], 
+                 onSuccess, onError);
+          });
+
+          /*db.transaction(function (tx) {
+            tx.executeSql("DELETE FROM DATA", 
+                 [], 
+                 onSuccess, onError);
+          });*/
+
+
+          self.$app.dialog.alert("Data Has Been Added");
         });
+
+        //self.$app.dialog.alert(data.mode);
+
+        if(data.mode == 'E'){
+          db.transaction(function (tx) {
+              tx.executeSql('SELECT * FROM data WHERE ID = '+data.ID,[], function(tx, results){
+                for (var i = 0; i < results.rows.length; i++) {
+                    row = results.rows.item(i);
+                    $$("input[name=name]").val(row["NAME"]);
+                    $$("input[name=username]").val(row["USERNAME"]);
+                    $$("input[name=password]").val(row["PASSWORD"]);
+                }
+              });
+          });
+
+          $$(".title").html("Edit");
+        }
 
         console.log('pageInit', page);
       },

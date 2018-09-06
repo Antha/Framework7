@@ -52,10 +52,32 @@ $$('#my-login-screen .login-button').on('click', function () {
   app.dialog.alert('Username: ' + username + '<br>Password: ' + password);
 });
 
-$$('#add-data').on('click', function () {
-  alert("Haiii");
+
+var dbSize = 5 * 1024 * 1024; // 5MB
+
+var db = openDatabase("Todo", "", "Todo manager", dbSize, function() {
+    console.log('db successfully opened or created');
 });
+
+function onSuccess(transaction, resultSet) {
+    console.log('Query completed: ' + JSON.stringify(resultSet));
+}
+
+function onError(transaction, error) {
+    console.log('Query failed: ' + error.message);
+}
 
 /*Framework7.request.get('pages/add.html', function (data) {
   $$(".popup .view .page").html(data);
 });*/
+
+//CREATE TABLE
+db.transaction(function (tx) {
+   tx.executeSql("CREATE TABLE IF NOT EXISTS data(ID INTEGER PRIMARY KEY ASC, NAME TEXT, USERNAME TEXT, PASSWORD TEXT)",
+                [], onSuccess, onError);
+});
+
+db.transaction(function (tx) {
+    tx.executeSql("CREATE TABLE IF NOT EXISTS auth(PASSWORD TEXT)",
+                [], onSuccess, onError);
+});

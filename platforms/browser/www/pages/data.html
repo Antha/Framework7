@@ -1,28 +1,130 @@
-<div class="page" data-name="about">
-  <div class="navbar">
-    <div class="navbar-inner sliding">
-      <div class="left">
-        <a href="#" class="link back">
-          <i class="icon icon-back"></i>
-          <span class="ios-only">Back</span>
-        </a>
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">Data</div>
       </div>
-      <div class="title">Password</div>
+    </div>
+    <div class="page-content">
+           <div class="data-table">
+                    <table>
+                    <thead>
+                      <tr>
+                        <th class="label-cell">ID</th>
+                        <th class="numeric-cell">NAME</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+        </div>          
+        <div class="block block-strong row">
+        </div>        
     </div>
   </div>
-  <div class="page-content">
-    <div class="block-title"></div>
-    <div class="block block-strong">
-      <table id="data" class="table table-hover dataTable no-footer dtr-inline collapsed" cellspacing="0" width="100%" role="grid" aria-describedby="example_info" style="width: 100%;">
-            <thead>
-                <tr role="row">
-                <th class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 44.5px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">Name</th>
-                <th class="actions sorting_disabled" rowspan="1" colspan="1" style="width: 71px;" aria-label="Actions">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+</template>
+<style>
+  p {
+    margin: 10px 0;
+  }
+</style>
+<script>
+  return {
+    // Lifecycle Hooks
+    beforeCreate() {
+      console.log('componentBeforeCreate', this)
+    },
+    created() {
+      console.log('componentCreated', this)
+    },
+    beforeMount() {
+      console.log('componentBeforeMount', this)
+    },
+    mounted() {
+      console.log('componentMounted', this);
+    },
+    beforeDestroy() {
+      console.log('componentBeforeDestroy', this);
+    },
+    destroyed() {
+      console.log('componentDestroyed', this);
+    },
+    // Component Data
+    data: function () {
+      // Must return an object
+      return {
+        name: 'Jimmy',
+        age: 25,
+        like: ['Tennis', 'Chess', 'Football'],
+      }
+    },
+    // Component Methods
+    methods: {
+    },
+    // Page Events
+    on: {
+      pageMounted: function(e, page) {
+        console.log('pageMounted', page);
+      },
+      pageInit: function(e, page) {
+        var self = this;
+        
+        var dbSize = 5 * 1024 * 1024; // 5MB
+
+        var db = openDatabase("Todo", "", "Todo manager", dbSize, function() {
+            console.log('db successfully opened or created');
+        });
+
+        function onSuccess(transaction, resultSet) {
+            console.log('Query completed: ' + JSON.stringify(resultSet));
+        }
+
+        function onError(transaction, error) {
+            console.log('Query failed: ' + error.message);
+        }
+
+        db.transaction(function (tx) {
+            tx.executeSql("SELECT * FROM data",[], function(tx,results){
+              var len = results.rows.length;
+              for (var i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                $$('table tbody').append($$(
+                        '<tr>'+
+                        '<td class="label-cell">'+
+                        '<a href="/add/E/'+row["ID"]+'/">'
+                        +row["ID"]+'</a></td>'+
+                        '<td class="numeric-cell">'+row["NAME"]+'</td>'+
+                        '</tr>'));
+              }
+
+            }, onError);
+        });
+       
+        
+        
+        console.log('pageInit', page);
+      },
+      pageBeforeIn: function(e, page) {
+        console.log('pageBeforeIn', page);
+      },
+      pageAfterIn: function(e, page) {
+        console.log('pageAfterIn', page);
+      },
+      pageBeforeOut: function(e, page) {
+        console.log('pageBeforeOut', page);
+      },
+      pageAfterOut: function(e, page) {
+        console.log('pageAfterOut', page);
+      },
+      pageBeforeRemove: function(e, page) {
+        console.log('pageBeforeRemove', page);
+      },
+    }
+  }
+</script>

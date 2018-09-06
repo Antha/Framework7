@@ -8,12 +8,12 @@ routes = [
     url: './pages/about.html',
   },
   {
-    path: '/add/',
+    path: '/add/:mode/:ID/',
     componentUrl: './pages/add.html',
   },
   {
     path: '/data/',
-    url: './pages/data.html',
+    componentUrl: './pages/data.html',
   },
   {
     path: '/form/',

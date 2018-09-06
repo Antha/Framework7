@@ -110,7 +110,9 @@
       },
       pageInit: function(e, page) {
         var self = this;
-        self.$app.dialog.alert('Hello World');
+        var data = this.$route.params;
+
+        self.$app.dialog.alert(data.user);
         console.log('pageInit', page);
       },
       pageBeforeIn: function(e, page) {
