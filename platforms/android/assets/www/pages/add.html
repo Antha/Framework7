@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" id="add">
     <div class="navbar">
       <div class="navbar-inner sliding">
         <div class="left">
@@ -116,13 +116,28 @@
         }
 
         $$('#add-data').on('click', function () {
-          db.transaction(function (tx) {
-             tx.executeSql("INSERT INTO data(NAME,USERNAME,PASSWORD) VALUES (?,?,?)", 
-                [$$("input[name=name]").val(),
-                 $$("input[name=username]").val(),
-                 $$("input[name=password]").val()], 
-                 onSuccess, onError);
-          });
+          if(data.mode == 'A'){
+            db.transaction(function (tx) {
+               tx.executeSql("INSERT INTO data(NAME,USERNAME,PASSWORD) VALUES (?,?,?)", 
+                  [$$("input[name=name]").val(),
+                   $$("input[name=username]").val(),
+                   $$("input[name=password]").val()], 
+                   onSuccess, onError);
+            });
+            self.$app.dialog.alert("Data Has Been Added");
+          }
+
+          if(data.mode == 'E'){
+            db.transaction(function (tx) {
+               tx.executeSql("UPDATE data SET NAME = ?,USERNAME = ?,PASSWORD = ? WHERE ID = ?", 
+                  [$$("input[name=name]").val(),
+                   $$("input[name=username]").val(),
+                   $$("input[name=password]").val(),
+                   data.ID], 
+                   onSuccess, onError);
+            });
+            self.$app.dialog.alert("Data Has Been Edited");
+          }
 
           /*db.transaction(function (tx) {
             tx.executeSql("DELETE FROM DATA", 
@@ -130,13 +145,11 @@
                  onSuccess, onError);
           });*/
 
-
-          self.$app.dialog.alert("Data Has Been Added");
         });
 
         //self.$app.dialog.alert(data.mode);
 
-        if(data.mode == 'E'){
+        if(data.mode == 'E' || data.mode == 'L'){
           db.transaction(function (tx) {
               tx.executeSql('SELECT * FROM data WHERE ID = '+data.ID,[], function(tx, results){
                 for (var i = 0; i < results.rows.length; i++) {
@@ -148,7 +161,12 @@
               });
           });
 
-          $$(".title").html("Edit");
+          $$("#add .title").html("Edit");
+        }
+
+        if(data.mode == 'L'){
+          $$("#add .title").html("Look");
+          $$("#add-data").hide();
         }
 
         console.log('pageInit', page);

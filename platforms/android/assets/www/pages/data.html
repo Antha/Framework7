@@ -18,13 +18,16 @@
                       <tr>
                         <th class="label-cell">ID</th>
                         <th class="numeric-cell">NAME</th>
+                        <th class="numeric-cell">Action</th> 
                       </tr>
                     </thead>
                     <tbody>
                     </tbody>
                   </table>
         </div>          
-        <div class="block block-strong row">
+          <div class="block block-strong row">
+          </div>
+        </div>
         </div>        
     </div>
   </div>
@@ -35,6 +38,7 @@
   }
 </style>
 <script>
+
   return {
     // Lifecycle Hooks
     beforeCreate() {
@@ -92,21 +96,38 @@
         db.transaction(function (tx) {
             tx.executeSql("SELECT * FROM data",[], function(tx,results){
               var len = results.rows.length;
+
               for (var i = 0; i < results.rows.length; i++) {
                 var row = results.rows.item(i);
                 $$('table tbody').append($$(
                         '<tr>'+
                         '<td class="label-cell">'+
-                        '<a href="/add/E/'+row["ID"]+'/">'
+                        '<a>'
                         +row["ID"]+'</a></td>'+
                         '<td class="numeric-cell">'+row["NAME"]+'</td>'+
+                        '<td class="numeric-cell">'+
+                        '<div class="block"><div class="row"><a href="/add/E/'+row["ID"]+'/"><button class="col-33 button button-fill">Edit</button></a>'+
+                        '<a href="/add/L/'+row["ID"]+'/"><button class="col-33 button button-fill">Look</button></a>'+
+                        '<button id="'+row["ID"]+'" class="doDel col-33 button button-fill">Delete</button></div></div>'+
+                        '</td>'+
                         '</tr>'));
               }
 
+              $$("tbody .doDel").on('click', function () {
+                var data_id = $$(this).attr("id");
+                app.dialog.confirm('Are You Sure Want To Delete?', function () {
+                  
+                  db.transaction(function (tx) {
+                    tx.executeSql(" DELETE FROM data WHERE ID = "+data_id,[], onError, onSuccess);
+                  });
+
+                  mainView.router.refreshPage();
+                  app.dialog.alert('The Data Has Been Deleted.ID = '+data_id);
+                });
+              });
+
             }, onError);
         });
-       
-        
         
         console.log('pageInit', page);
       },
