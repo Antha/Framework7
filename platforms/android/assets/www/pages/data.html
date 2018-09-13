@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="page-content">
-           <div class="data-table">
+           <div class="carddata-table">
                     <table>
                     <thead>
                       <tr>
@@ -104,11 +104,14 @@
                         '<td class="label-cell">'+
                         '<a>'
                         +row["ID"]+'</a></td>'+
-                        '<td class="numeric-cell">'+row["NAME"]+'</td>'+
+                        '<td class="label-cell">'+row["NAME"]+'</td>'+
                         '<td class="numeric-cell">'+
-                        '<div class="block"><div class="row"><a href="/add/E/'+row["ID"]+'/"><button class="col-33 button button-fill">Edit</button></a>'+
-                        '<a href="/add/L/'+row["ID"]+'/"><button class="col-33 button button-fill">Look</button></a>'+
-                        '<button id="'+row["ID"]+'" class="doDel col-33 button button-fill">Delete</button></div></div>'+
+                        '<div class="block">'+
+                        '<div class="row">'+
+                        '<a href="/add/E/'+row["ID"]+'/"><button class="col button button-fill">Edit</button></a>'+
+                        '<a href="/add/L/'+row["ID"]+'/"><button class="col button button-fill">Look</button></a>'+
+                        '<a><button id="'+row["ID"]+'" class="doDel col button button-fill">Delete</button></a>'+
+                        '</div></div>'+
                         '</td>'+
                         '</tr>'));
               }
