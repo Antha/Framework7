@@ -28,6 +28,9 @@ var app  = new Framework7({
   panel: {
     leftBreakpoint: 960,
   },
+
+  pushState : true
+
 });
 
 // Init/Create left panel view
@@ -41,17 +44,30 @@ var mainView = app.views.create('.view-main', {
 });
 
 // Login Screen Demo
+app.loginScreen.open('#my-login-screen');
 $$('#my-login-screen .login-button').on('click', function () {
   var username = $$('#my-login-screen [name="username"]').val();
   var password = $$('#my-login-screen [name="password"]').val();
-
-  // Close login screen
-  app.loginScreen.close('#my-login-screen');
-
-  // Alert username and password
-  app.dialog.alert('Username: ' + username + '<br>Password: ' + password);
+  
+  if(username == "antaxzn" && password == "123456"){
+    // Close login screen
+    app.loginScreen.close('#my-login-screen');
+  }else{
+    app.dialog.alert("Wrong password");
+  }
+  // Alert username and password  
 });
 
+//Password Screen Demo
+$$('#signup-button').on('click', function () {
+    app.loginScreen.open('#my-create-password');
+});
+
+$$('#signup-button-do').on('click', function () {
+    app.loginScreen.close('#my-create-password');
+});
+
+document.addEventListener("backbutton", app.methods.onBackKeyDown, false);
 
 var dbSize = 5 * 1024 * 1024; // 5MB
 
