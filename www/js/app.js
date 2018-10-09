@@ -89,6 +89,12 @@ var appminex = {
         document.addEventListener("backbutton", 
            function(e){ 
             var page=app.getCurrentView().activePage; app.hidePreloader(); 
+            if(page.name=="home")
+              { e.preventDefault(); 
+                if(confirm("Do you want to Exit!")) 
+                  { navigator.app.clearHistory(); navigator.app.exitApp(); } 
+              } 
+            else { navigator.app.backHistory() }
            }, false);
     },
 
