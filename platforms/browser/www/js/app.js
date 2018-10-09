@@ -49,13 +49,18 @@ $$('#my-login-screen .login-button').on('click', function () {
   var username = $$('#my-login-screen [name="username"]').val();
   var password = $$('#my-login-screen [name="password"]').val();
   
-  if(username == "antaxzn" && password == "123456"){
+  //if(username == "antaxzn" && password == "123456"){
     // Close login screen
     app.loginScreen.close('#my-login-screen');
-  }else{
-    app.dialog.alert("Wrong password");
-  }
+  //}else{
+    //app.dialog.alert("Wrong password");
+  //}
   // Alert username and password  
+});
+
+//Back
+$$('.back').on('click', function () {
+  app.loginScreen.open('#my-login-screen');
 });
 
 //Password Screen Demo
@@ -67,7 +72,7 @@ $$('#signup-button-do').on('click', function () {
     app.loginScreen.close('#my-create-password');
 });
 
-document.addEventListener("backbutton", app.methods.onBackKeyDown, false);
+document.addEventListener("backbutton", function(){ alert("Hello"); }, false);
 
 var dbSize = 5 * 1024 * 1024; // 5MB
 
