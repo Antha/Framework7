@@ -72,7 +72,33 @@ $$('#signup-button-do').on('click', function () {
     app.loginScreen.close('#my-create-password');
 });
 
-document.addEventListener("backbutton", function(){ alert("Hello"); }, false);
+
+//Device Listener
+var app = {
+    // Application Constructor
+    initialize: function() {
+        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+    },
+
+    // deviceready Event Handler
+    //
+    // Bind any cordova events here. Common events are:
+    // 'pause', 'resume', etc.
+    onDeviceReady: function() {
+        this.receivedEvent('deviceready');
+
+        document.addEventListener("backbutton", app.methods.onBackKeyDown, false);
+    },
+
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+       
+    }
+};
+
+app.initialize();
+//---------------------------------------
+
 
 var dbSize = 5 * 1024 * 1024; // 5MB
 
