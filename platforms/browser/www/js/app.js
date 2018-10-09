@@ -86,7 +86,10 @@ var appminex = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
-        document.addEventListener("backbutton", app.methods.onBackKeyDown, false);
+        document.addEventListener("backbutton", 
+           function(e){ 
+            var page=app.getCurrentView().activePage; app.hidePreloader(); 
+           }, false);
     },
 
     // Update DOM on a Received Event
