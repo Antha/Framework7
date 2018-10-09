@@ -74,7 +74,7 @@ $$('#signup-button-do').on('click', function () {
 
 
 //Device Listener
-var app = {
+var appminex = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
@@ -86,7 +86,6 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
-
         document.addEventListener("backbutton", app.methods.onBackKeyDown, false);
     },
 
@@ -96,7 +95,7 @@ var app = {
     }
 };
 
-app.initialize();
+appminex.initialize();
 //---------------------------------------
 
 
