@@ -48,7 +48,10 @@
           </ul>
         </form>
         <div class="block block-strong row">
-          <div class="col"><a class="button convert-form-to-data" href="#" id="add-data">Submit</a></div>
+          <div class="col">
+            <a class="button convert-form-to-data" href="#" id="add-data">Submit</a>
+            <a class="button convert-form-to-data" href="#" id="show-password">Show Password</a>
+          </div>
         </div>        
        </div>
   </div>
@@ -115,6 +118,15 @@
             console.log('Query failed: ' + error.message);
         }
 
+        //Show Password
+        $$("#show-password").on('click',function(){
+          if($$("input[name=password]").attr('type') == "password"){
+            $$("input[name=password]").attr('type','text');
+          }else{
+            $$("input[name=password]").attr('type','password');
+          }
+        });
+
         $$('#add-data').on('click', function () {
           if(data.mode == 'A'){
             db.transaction(function (tx) {
@@ -144,7 +156,47 @@
                  [], 
                  onSuccess, onError);
           });*/
+          //loadData();
+          
+          $$('table tbody').html("");
 
+          db.transaction(function (tx) {
+            tx.executeSql("SELECT * FROM data",[], function(tx,results){
+              var len = results.rows.length;
+
+              for (var i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                $$('table tbody').append($$(
+                        '<tr>'+
+                        '<td class="label-cell">'+
+                        '<a>'
+                        +row["ID"]+'</a></td>'+
+                        '<td class="label-cell">'+row["NAME"]+'</td>'+
+                        '<td class="numeric-cell">'+
+                        '<div class="block">'+
+                        '<div class="row">'+
+                        '<a href="/add/E/'+row["ID"]+'/"><img data-src="res/Pencil.png" class="lazy lazy-fade-in"></a>'+
+                        '<a href="/add/L/'+row["ID"]+'/"><img data-src="res/look.png" class="lazy lazy-fade-in"></a>'+
+                        '<a><img id="'+row["ID"]+'" data-src="res/red-del.png" class="doDel lazy lazy-fade-in"></a>'+
+                        '</div></div>'+
+                        '</td>'+
+                        '</tr>'));
+              }
+            }, onError);
+          });
+
+          $$("tbody .doDel").on('click', function () {
+                var data_id = $$(this).attr("id");
+                app.dialog.confirm('Are You Sure Want To Delete?', function () {
+                  
+                  db.transaction(function (tx) {
+                    tx.executeSql(" DELETE FROM data WHERE ID = "+data_id,[], onError, onSuccess);
+                  });
+
+                  mainView.router.refreshPage();
+                  app.dialog.alert('The Data Has Been Deleted.ID = '+data_id);
+                });
+              });
         });
 
         //self.$app.dialog.alert(data.mode);

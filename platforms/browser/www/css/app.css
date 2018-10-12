@@ -31,3 +31,15 @@
   content: '';
   z-index: 6000;
 }
+
+table .row img{
+  width: 30px;
+}
+
+table{
+  width: 100%;
+}
+
+table tr td{
+  text-align: center;
+}

@@ -92,7 +92,7 @@
         function onError(transaction, error) {
             console.log('Query failed: ' + error.message);
         }
-
+        
         db.transaction(function (tx) {
             tx.executeSql("SELECT * FROM data",[], function(tx,results){
               var len = results.rows.length;
@@ -108,9 +108,9 @@
                         '<td class="numeric-cell">'+
                         '<div class="block">'+
                         '<div class="row">'+
-                        '<a href="/add/E/'+row["ID"]+'/"><button class="col button button-fill">Edit</button></a>'+
-                        '<a href="/add/L/'+row["ID"]+'/"><button class="col button button-fill">Look</button></a>'+
-                        '<a><button id="'+row["ID"]+'" class="doDel col button button-fill">Delete</button></a>'+
+                        '<a href="/add/E/'+row["ID"]+'/"><img data-src="res/Pencil.png" class="lazy lazy-fade-in"></a>'+
+                        '<a href="/add/L/'+row["ID"]+'/"><img data-src="res/look.png" class="lazy lazy-fade-in"></a>'+
+                        '<a><img id="'+row["ID"]+'" data-src="res/red-del.png" class="doDel lazy lazy-fade-in"></a>'+
                         '</div></div>'+
                         '</td>'+
                         '</tr>'));
