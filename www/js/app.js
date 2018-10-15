@@ -3,6 +3,7 @@ var $$ = Dom7;
 
 // Framework7 App main instance
 var app  = new Framework7({
+  pushState: true,
   root: '#app', // App root element
   id: 'io.framework7.testapp', // App bundle ID
   name: 'Framework7', // App name
@@ -60,8 +61,9 @@ $$('#my-login-screen .login-button').on('click', function () {
 
 //Back
 $$('.back').on('click', function () {
-  //var page = mainView.activePage.name;
-  //alert(page);
+  /*var cpage = mainView.activePage;
+  var cpagename = cpage.name;
+  alert(cpagename);*/
   app.loginScreen.open('#my-login-screen');
 });
 
@@ -91,7 +93,7 @@ var appminex = {
         document.addEventListener("backbutton", 
            function(e){ 
                 
-                var cpage = mainView.activePage;
+                /*var cpage = mainView.activePage;
 			    var cpagename = cpage.name;
 			    console.log(cpagename);
 			    if (($$('#leftpanel').hasClass('active')) || ($$('#rightpanel').hasClass('active'))) { // #leftpanel and #rightpanel are id of both panels.
@@ -111,7 +113,7 @@ var appminex = {
 			        });
 			    } else {
 			        mainView.router.back();
-			    }
+			    }*/
 
             }, false);
     },
