@@ -60,6 +60,8 @@ $$('#my-login-screen .login-button').on('click', function () {
 
 //Back
 $$('.back').on('click', function () {
+  //var page = mainView.activePage.name;
+  //alert(page);
   app.loginScreen.open('#my-login-screen');
 });
 
@@ -88,19 +90,29 @@ var appminex = {
         this.receivedEvent('deviceready');
         document.addEventListener("backbutton", 
            function(e){ 
-                //var page=app.getCurrentView().activePage;
-                alert("helloWorld");
+                
+                var cpage = mainView.activePage;
+			    var cpagename = cpage.name;
+			    console.log(cpagename);
+			    if (($$('#leftpanel').hasClass('active')) || ($$('#rightpanel').hasClass('active'))) { // #leftpanel and #rightpanel are id of both panels.
+			        myApp.closePanel();
+			        return false;
+			    } else if ($$('.modal-in').length > 0) {
+			        myApp.closeModal();
+			        return false;
+			    } else if (cpagename == 'index') {
+			        myApp.confirm('Are you sure you want to exit?', function() {
+			            // var deviceType = device.platform;
+			            // if(deviceType == “Android” || deviceType == “android”){
+			            navigator.app.exitApp();
+			            // }
+			        },
+			        function() {
+			        });
+			    } else {
+			        mainView.router.back();
+			    }
 
-	            /*if(page.name == "home"){ 
-	            	e.preventDefault(); 
-	                if(confirm("Do you want to Exit!")) { 
-	                	navigator.app.clearHistory(); 
-	                	navigator.app.exitApp(); 
-	                } 
-	            } 
-	            else { 
-	            	navigator.app.backHistory() 
-	            }*/
             }, false);
     },
 
