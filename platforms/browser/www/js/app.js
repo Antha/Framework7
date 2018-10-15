@@ -88,8 +88,8 @@ var appminex = {
         this.receivedEvent('deviceready');
         document.addEventListener("backbutton", 
            function(e){ 
-                var page=app.getCurrentView().activePage;
-                alert(page);
+                //var page=app.getCurrentView().activePage;
+                alert("helloWorld");
 
 	            /*if(page.name == "home"){ 
 	            	e.preventDefault(); 
